@@ -8,7 +8,7 @@ from functools import lru_cache
   
 class ThreadSafeLRUCache:    
     '''
-    线程安全的LRU缓存
+    Thread-safe LRU caching
     '''
     def __init__(self, maxsize=128):    
         self.cache = OrderedDict()    
@@ -29,15 +29,17 @@ class ThreadSafeLRUCache:
             self.cache[key] = value 
 
 class ZipFileCache:  
-    def __init__(self, zip_ref_cache_size=128, file_cache_size=128, disk_cache_dir='./tmp', disk_cache_limit=1024, disk_cleanup_interval=120):  
+    '''
+    Provide a ZipFileCache class, which can support reading files using the compressed package path + file path in the compressed package, with memory and disk cache mechanism.
+    '''
+    def __init__(self, zip_ref_cache_size=8, file_cache_size=128, disk_cache_dir='./tmp', disk_cache_limit=1024, disk_cleanup_interval=120):  
         '''
-        初始化机制:
-        (* 设置为0关闭这个缓存功能)
-        zip_ref_cache_size          *压缩文件缓存数量
-        file_cache_size             *内存缓存数量
-        disk_cache_dir              磁盘缓存路径(启用取决于disk_cache_limit)
-        disk_cache_limit            *磁盘缓存最大数量
-        disk_cleanup_interval       *定时清除磁盘缓存秒数
+        (* : Set 0 to off )
+        zip_ref_cache_size     = 8        *The number of caches for compressed files
+        file_cache_size        = 128      *Number of memory cache files
+        disk_cache_dir         = "/tmp"   Disk cache path (enabled depending on disk_cache_limit)
+        disk_cache_limit       = 1024     *The maximum number of disk caches
+        disk_cleanup_interval  = 120      *The number of seconds to clear the disk cache
         '''
         self.zip_ref_cache = ThreadSafeLRUCache(zip_ref_cache_size)  
         self.file_cache = ThreadSafeLRUCache(file_cache_size)  
@@ -73,8 +75,10 @@ class ZipFileCache:
   
     def read_file(self, zip_path, file_path):  
         '''
-        zip_path 压缩包路径
-        file_path 文件在压缩包内部的路径
+        zip_path    : Archive path
+        file_path   : The path of the file inside the archive
+
+        return : bytes object
         '''
         zip_key = (zip_path, 'zip_ref')  
         file_key = (zip_path, file_path)  
@@ -115,8 +119,10 @@ class ZipFileCache:
 
     def read_files(self, zip_path, file_paths):  
         '''
-        zip_path 压缩包路径
-        file_paths 文件在压缩包内部的路径元组or列表
+        zip_path    : Archive path
+        file_paths  : The path tuple or list of files inside the archive
+
+        return : bytes objects tuple 
         '''
         return [self.read_file(zip_path, file_path) for file_path in file_paths]  
   

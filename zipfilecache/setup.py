@@ -8,10 +8,10 @@ setup(
     ],  
     author='AliceSohii',  
     author_email='alicesohii@outlook.com',  
-    description='A Python package for caching zip file contents',  
+    description='Provide a ZipFileCache class, which can support reading files using the compressed package path + file path in the compressed package, with memory and disk cache mechanism.',  
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',  
-    url='https://github.com/your-username/zipfilecache',  # 你的项目在GitHub或其他地方的URL  
+    url='https://github.com/sohiidayo/ZipOpenCache', 
     classifiers=[  
         'Programming Language :: Python :: 3',  
         'License :: OSI Approved :: MIT License',  
