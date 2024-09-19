@@ -2,6 +2,11 @@
 
 Provide a ZipFileCache class, which can support reading files using the compressed package path + file path in the compressed package, with memory and disk cache mechanism.
 
+#### import
+    form zipfilecache import zip_cache
+
+
+#### Doc
     class ZipFileCache
         __init__
             (* : Set 0 to off )
